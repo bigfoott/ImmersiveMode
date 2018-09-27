@@ -1,0 +1,1 @@
+Disable Beat Saber UI in the song scene.
