@@ -13,6 +13,7 @@ namespace ImmersiveMode
         GameObject multi;
         GameObject combo;
         GameObject energy;
+        GameObject front;
 
         GameObject progress_counter;
         GameObject progress_score;
@@ -32,17 +33,18 @@ namespace ImmersiveMode
                 multi = GameObject.Find("MultiplierPanel");
                 combo = GameObject.Find("ComboPanel");
                 energy = GameObject.Find("EnergyPanel");
+                front = GameObject.Find("FrontPanel");
 
                 progress_counter = GameObject.Find("Counter");
                 progress_score = GameObject.Find("ScoreCounter");
                 fcdisplay_ring = GameObject.Find("FCRing");
 
-                if (multi == null || combo == null || energy == null || progress_counter == null || progress_score == null || fcdisplay_ring == null)
+                if (multi == null || combo == null || energy == null || front == null)
                     yield return new WaitForSeconds(0.01f);
                 else
                     loaded = true;
             }
-
+            
             Init();
         }
 
@@ -51,10 +53,11 @@ namespace ImmersiveMode
             multi.SetActive(false);
             combo.SetActive(false);
             energy.SetActive(false);
+            front.SetActive(false);
             
-            progress_counter.SetActive(false);
-            progress_score.SetActive(false);
-            fcdisplay_ring.SetActive(false);
+            if (progress_counter != null) progress_counter.SetActive(false);
+            if (progress_score != null) progress_score.SetActive(false);
+            if (fcdisplay_ring != null) fcdisplay_ring.SetActive(false);
             
             Console.WriteLine("[ImmersiveMode] Disabled UI objects.");
         }

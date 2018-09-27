@@ -15,18 +15,25 @@ namespace ImmersiveMode
         public string Version => "1.0.0";
 
         private readonly string[] env = { "DefaultEnvironment", "BigMirrorEnvironment", "TriangleEnvironment", "NiceEnvironment" };
+        
+        private void OnActiveSceneChanged(Scene arg0, Scene arg1)
+        {
+            if (env.Contains(arg1.name) && ModPrefs.GetBool("ImmersiveMode", "Enabled", false, true))
+                new GameObject("HUDHider").AddComponent<HUDHider>();
+            else if (SettingsUI.isMenuScene(arg1))
+            {
+                var subMenu = SettingsUI.CreateSubMenu("Immersive Mode");
+                var enabled = subMenu.AddBool("Enabled");
+                enabled.GetValue += delegate { return ModPrefs.GetBool("ImmersiveMode", "Enabled", false, true); };
+                enabled.SetValue += delegate (bool value) { ModPrefs.SetBool("ImmersiveMode", "Enabled", value); };
+            }
+        }
+        
         public void OnApplicationStart()
         {
             SceneManager.activeSceneChanged += OnActiveSceneChanged;
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-
-        private void OnActiveSceneChanged(Scene arg0, Scene arg1)
-        {
-            if (!env.Contains(arg1.name)) return;
-            new GameObject("HUDHider").AddComponent<HUDHider>();
-        }
-
         public void OnApplicationQuit()
         {
             SceneManager.activeSceneChanged -= OnActiveSceneChanged;
