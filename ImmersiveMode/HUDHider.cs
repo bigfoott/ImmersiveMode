@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 namespace ImmersiveMode
@@ -17,49 +18,56 @@ namespace ImmersiveMode
 
         GameObject progress_counter;
         GameObject progress_score;
+        GameObject progress_rank;
         GameObject fcdisplay_ring;
+        GameObject tweaks_time;
 
         private void Awake()
         {
+            Console.WriteLine("[ImmersiveMode] Object initialized. Waiting for load. --------------------------");
             StartCoroutine(WaitForLoad());
         }
 
         IEnumerator WaitForLoad()
         {
-            bool loaded = false;
-            
-            while (!loaded)
+            while (multi == null || combo == null || front == null)
             {
+                yield return new WaitForSeconds(0.02f);
+
                 multi = GameObject.Find("MultiplierPanel");
                 combo = GameObject.Find("ComboPanel");
-                energy = GameObject.Find("EnergyPanel");
                 front = GameObject.Find("FrontPanel");
-
+                energy = GameObject.Find("EnergyPanel");
+                
                 progress_counter = GameObject.Find("Counter");
                 progress_score = GameObject.Find("ScoreCounter");
                 fcdisplay_ring = GameObject.Find("FCRing");
+                tweaks_time = GameObject.Find("Clock Canvas");
 
-                if (multi == null || combo == null || energy == null || front == null)
-                    yield return new WaitForSeconds(0.01f);
-                else
-                    loaded = true;
+                progress_rank = (FindObjectsOfType(typeof(GameObject)) as GameObject[]).Where(o => o.GetComponent<TextMeshPro>() != null && o.GetComponent<TextMeshPro>().text == "SSS").FirstOrDefault();
             }
-            
+
+            Console.WriteLine("[ImmersiveMode] Found objects. Initializing HUDHider. --------------------------");
+
             Init();
         }
 
         void Init()
         {
+            Console.WriteLine("[ImmersiveMode] Initialized. --------------------------");
+
             multi.SetActive(false);
             combo.SetActive(false);
-            energy.SetActive(false);
             front.SetActive(false);
-            
+            if (energy != null) energy.SetActive(false);
+
             if (progress_counter != null) progress_counter.SetActive(false);
             if (progress_score != null) progress_score.SetActive(false);
+            if (progress_rank != null) progress_rank.SetActive(false);
             if (fcdisplay_ring != null) fcdisplay_ring.SetActive(false);
+            if (tweaks_time != null) Destroy(tweaks_time);
             
-            Console.WriteLine("[ImmersiveMode] Disabled UI objects.");
+            Console.WriteLine("[ImmersiveMode] Disabled UI objects. --------------------------");
         }
         
         void Update()
