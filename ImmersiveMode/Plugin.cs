@@ -14,18 +14,22 @@ namespace ImmersiveMode
         public string Name => "Immersive Mode";
         public string Version => "1.0.0";
 
-        private readonly string[] env = { "DefaultEnvironment", "BigMirrorEnvironment", "TriangleEnvironment", "NiceEnvironment" };
-        
+        private static readonly string[] env = { "DefaultEnvironment", "BigMirrorEnvironment", "TriangleEnvironment", "NiceEnvironment" };
+        public static readonly string[] cameraplugins = { "CameraPlus", "CameraPlusOrbitEdition", "DynamicCamera" };
+
         private void OnActiveSceneChanged(Scene arg0, Scene arg1)
         {
-            if (env.Contains(arg1.name) && ModPrefs.GetBool("ImmersiveMode", "Enabled", false, true))
+            if (env.Contains(arg1.name) && (ModPrefs.GetBool("ImmersiveMode", "HMDEnabled", false, true) || ModPrefs.GetBool("ImmersiveMode", "MirrorEnabled", false, true)))
                 new GameObject("HUDHider").AddComponent<HUDHider>();
             else if (SettingsUI.isMenuScene(arg1))
             {
                 var subMenu = SettingsUI.CreateSubMenu("Immersive Mode");
-                var enabled = subMenu.AddBool("Enabled");
-                enabled.GetValue += delegate { return ModPrefs.GetBool("ImmersiveMode", "Enabled", false, true); };
-                enabled.SetValue += delegate (bool value) { ModPrefs.SetBool("ImmersiveMode", "Enabled", value); };
+                var hmd = subMenu.AddBool("Hide HUD in HMD");
+                var mirror = subMenu.AddBool("Hide HUD in mirror");
+                hmd.GetValue += delegate { return ModPrefs.GetBool("ImmersiveMode", "HMDEnabled", false, true); };
+                hmd.SetValue += delegate (bool value) { ModPrefs.SetBool("ImmersiveMode", "HMDEnabled", value); };
+                mirror.GetValue += delegate { return ModPrefs.GetBool("ImmersiveMode", "MirrorEnabled", false, true); };
+                mirror.SetValue += delegate (bool value) { ModPrefs.SetBool("ImmersiveMode", "MirrorEnabled", value); };
             }
         }
         
