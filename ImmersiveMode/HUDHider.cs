@@ -1,5 +1,4 @@
 ﻿using IllusionPlugin;
-using Ryder.Lightweight;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,9 +22,6 @@ namespace ImmersiveMode
         GameObject progress_rank;
         GameObject fcdisplay_ring;
         GameObject tweaks_time;
-
-        private static Redirection flyingTextEffect_InitAndPresent;
-        private static Redirection flyingSpriteEffect_InitAndPresent;
 
         private void Awake()
         {
@@ -54,9 +50,6 @@ namespace ImmersiveMode
             Console.WriteLine("[ImmersiveMode] Initialized. --------------------------");
 
             yield return new WaitForSeconds(0.05f);
-
-            flyingTextEffect_InitAndPresent = new Redirection(typeof(FlyingTextEffect).GetMethod("InitAndPresent"), typeof(HUDHider).GetMethod("FlyingTextInit"), true);
-            flyingSpriteEffect_InitAndPresent = new Redirection(typeof(FlyingSpriteEffect).GetMethod("InitAndPresent"), typeof(HUDHider).GetMethod("FlyingSpriteInit"), true);
 
             energy = GameObject.Find("EnergyPanel");
 
@@ -150,22 +143,6 @@ namespace ImmersiveMode
             }
             
             Console.WriteLine("[ImmersiveMode] Disabled UI objects. --------------------------");
-        }
-
-        public static void FlyingTextInit(FlyingTextEffect fte, string text, float duration, Vector3 targetPos, Color color, float fontSize, bool shake)
-        {
-            flyingTextEffect_InitAndPresent.InvokeOriginal(fte, text, duration, targetPos, color, fontSize, shake);
-
-            //fte.gameObject.layer = 26;
-            foreach (Transform c in fte.gameObject.transform)
-                c.gameObject.layer = 26;
-        }
-
-        public static void FlyingSpriteInit(FlyingSpriteEffect fse, float duration, Vector3 targetPos, Color color, bool shake)
-        {
-            flyingSpriteEffect_InitAndPresent.InvokeOriginal(fse, duration, targetPos, color, shake);
-
-            fse.gameObject.layer = 26;
         }
     }
 }

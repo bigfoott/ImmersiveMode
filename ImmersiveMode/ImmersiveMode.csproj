@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\Desktop\assemb\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\Desktop\assemb\Assembly-CSharp.dll</HintPath>
     </Reference>
@@ -65,11 +68,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Harmony\FlyingSpriteEffectInitAndPresent.cs" />
+    <Compile Include="Harmony\FlyingTextEffectInitAndPresent.cs" />
     <Compile Include="HUDHider.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionUtil.cs" />
-    <Compile Include="Ryder.Lightweight.cs" />
     <Compile Include="SettingsUI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

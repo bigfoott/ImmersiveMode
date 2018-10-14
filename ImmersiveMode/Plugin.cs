@@ -5,6 +5,8 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using IllusionPlugin;
+using Harmony;
+using System.Reflection;
 
 namespace ImmersiveMode
 {
@@ -37,6 +39,16 @@ namespace ImmersiveMode
         {
             SceneManager.activeSceneChanged += OnActiveSceneChanged;
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            try
+            {
+                var harmony = HarmonyInstance.Create("com.bigfoot.BeatSaber.ImmersiveMode");
+                harmony.PatchAll(Assembly.GetExecutingAssembly());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[ImmersiveMode] This plugin requires Harmony. Make sure you installed the mod correctly.\n" + e);
+            }
         }
         public void OnApplicationQuit()
         {
