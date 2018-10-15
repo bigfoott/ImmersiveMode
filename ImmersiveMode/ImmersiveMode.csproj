@@ -73,8 +73,8 @@
     <Compile Include="HUDHider.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReflectionUtil.cs" />
-    <Compile Include="SettingsUI.cs" />
+    <Compile Include="Util\ReflectionUtil.cs" />
+    <Compile Include="Util\SettingsUI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

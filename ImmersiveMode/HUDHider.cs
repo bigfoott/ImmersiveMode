@@ -22,10 +22,12 @@ namespace ImmersiveMode
         GameObject progress_rank;
         GameObject fcdisplay_ring;
         GameObject tweaks_time;
+        
+        private static readonly string[] cameraplugins = { "CameraPlus", "CameraPlusOrbitEdition", "DynamicCamera" };
 
         private void Awake()
         {
-            Console.WriteLine("[ImmersiveMode] Object initialized. Waiting for load. --------------------------");
+            Console.WriteLine("[ImmersiveMode] Object initialized. Waiting for load.");
             StartCoroutine(WaitForLoad());
         }
 
@@ -40,14 +42,14 @@ namespace ImmersiveMode
                 front = GameObject.Find("FrontPanel");
             }
 
-            Console.WriteLine("[ImmersiveMode] Found objects. Initializing HUDHider. --------------------------");
+            Console.WriteLine("[ImmersiveMode] Found objects. Initializing HUDHider.");
 
             StartCoroutine(Init());
         }
 
         IEnumerator Init()
         {
-            Console.WriteLine("[ImmersiveMode] Initialized. --------------------------");
+            Console.WriteLine("[ImmersiveMode] Initialized.");
 
             yield return new WaitForSeconds(0.05f);
 
@@ -67,15 +69,16 @@ namespace ImmersiveMode
             else
                 mainCamera.cullingMask |= (1 << 26);
 
-            foreach (var pl in IllusionInjector.PluginManager.Plugins.Where(p => Plugin.cameraplugins.Contains(p.Name)))
+            foreach (var pl in IllusionInjector.PluginManager.Plugins.Where(p => cameraplugins.Contains(p.Name)))
             {
-                MonoBehaviour _cameraPlus = ReflectionUtil.GetPrivateField<MonoBehaviour>(pl, "_cameraPlus");
-                while (_cameraPlus == null)
+                MonoBehaviour camPlus = ReflectionUtil.GetPrivateField<MonoBehaviour>(pl, "_cameraPlus");
+                while (camPlus == null)
                 {
                     yield return new WaitForEndOfFrame();
-                    _cameraPlus = ReflectionUtil.GetPrivateField<MonoBehaviour>(pl, "_cameraPlus");
+                    camPlus = ReflectionUtil.GetPrivateField<MonoBehaviour>(pl, "_cameraPlus");
                 }
-                Camera cam = ReflectionUtil.GetPrivateField<Camera>(_cameraPlus, "_cam");
+
+                Camera cam = ReflectionUtil.GetPrivateField<Camera>(camPlus, "_cam");
                 if (cam != null)
                 {
                     if (ModPrefs.GetBool("ImmersiveMode", "MirrorEnabled", false, true))
@@ -86,63 +89,48 @@ namespace ImmersiveMode
                 break;
             }
 
-            try
+            multi.layer = 26;
+            foreach (Transform c in multi.transform) c.gameObject.layer = 26;
+
+            combo.layer = 26;
+            foreach (Transform c in combo.transform) c.gameObject.layer = 26;
+
+            front.layer = 26;
+            foreach (Transform c in front.transform.GetChild(0).transform) c.gameObject.layer = 26;
+
+            if (energy != null)
             {
-                multi.layer = 26;
-                foreach (Transform c in multi.transform)
-                    c.gameObject.layer = 26;
-
-                combo.layer = 26;
-                foreach (Transform c in combo.transform)
-                    c.gameObject.layer = 26;
-                
-                front.layer = 26;
-                foreach (Transform c in front.transform.GetChild(0).transform)
-                    c.gameObject.layer = 26;
-
-                if (energy != null)
-                {
-                    energy.layer = 26;
-                    foreach (Transform c in energy.transform)
-                        c.gameObject.layer = 26;
-                }
-
-                if (progress_counter != null)
-                {
-                    progress_counter.layer = 26;
-                    foreach (Transform c in progress_counter.transform)
-                        c.gameObject.layer = 26;
-                }
-                
-                if (progress_score != null)
-                {
-                    progress_score.layer = 26;
-                    foreach (Transform c in progress_score.transform)
-                        c.gameObject.layer = 26;
-                }
-
-                if (progress_rank != null)
-                {
-                    progress_rank.layer = 26;
-                    foreach (Transform c in progress_rank.transform)
-                        c.gameObject.layer = 26;
-                }
-
-                if (fcdisplay_ring != null)
-                {
-                    fcdisplay_ring.layer = 26;
-                    foreach (Transform c in fcdisplay_ring.transform)
-                        c.gameObject.layer = 26;
-                }
-                
-                if (tweaks_time != null) tweaks_time.layer = 26;
+                energy.layer = 26;
+                foreach (Transform c in energy.transform) c.gameObject.layer = 26;
             }
-            catch (Exception e)
+
+            if (progress_counter != null)
             {
-                Console.WriteLine(e);
+                progress_counter.layer = 26;
+                foreach (Transform c in progress_counter.transform) c.gameObject.layer = 26;
             }
-            
-            Console.WriteLine("[ImmersiveMode] Disabled UI objects. --------------------------");
+
+            if (progress_score != null)
+            {
+                progress_score.layer = 26;
+                foreach (Transform c in progress_score.transform) c.gameObject.layer = 26;
+            }
+
+            if (progress_rank != null)
+            {
+                progress_rank.layer = 26;
+                foreach (Transform c in progress_rank.transform) c.gameObject.layer = 26;
+            }
+
+            if (fcdisplay_ring != null)
+            {
+                fcdisplay_ring.layer = 26;
+                foreach (Transform c in fcdisplay_ring.transform) c.gameObject.layer = 26;
+            }
+
+            if (tweaks_time != null) tweaks_time.layer = 26;
+
+            Console.WriteLine("[ImmersiveMode] Applied hidden layer (26) to game objects.");
         }
     }
 }

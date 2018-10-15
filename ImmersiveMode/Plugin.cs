@@ -17,7 +17,6 @@ namespace ImmersiveMode
         public string Version => "1.0.0";
 
         private static readonly string[] env = { "DefaultEnvironment", "BigMirrorEnvironment", "TriangleEnvironment", "NiceEnvironment" };
-        public static readonly string[] cameraplugins = { "CameraPlus", "CameraPlusOrbitEdition", "DynamicCamera" };
 
         private void OnActiveSceneChanged(Scene arg0, Scene arg1)
         {
@@ -26,10 +25,13 @@ namespace ImmersiveMode
             else if (SettingsUI.isMenuScene(arg1))
             {
                 var subMenu = SettingsUI.CreateSubMenu("Immersive Mode");
-                var hmd = subMenu.AddBool("Hide HUD in HMD");
-                var mirror = subMenu.AddBool("Hide HUD in mirror");
+                
+                var hmd = subMenu.AddBool("Hide in HMD");
+                var mirror = subMenu.AddBool("Hide in MIRROR");
+                
                 hmd.GetValue += delegate { return ModPrefs.GetBool("ImmersiveMode", "HMDEnabled", false, true); };
                 hmd.SetValue += delegate (bool value) { ModPrefs.SetBool("ImmersiveMode", "HMDEnabled", value); };
+                
                 mirror.GetValue += delegate { return ModPrefs.GetBool("ImmersiveMode", "MirrorEnabled", false, true); };
                 mirror.SetValue += delegate (bool value) { ModPrefs.SetBool("ImmersiveMode", "MirrorEnabled", value); };
             }
