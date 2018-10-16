@@ -2,7 +2,7 @@ Disable the in-song HUD in your headset or on the mirror.
 
 ## Setup
 
-Add the .dll to the Plugins folder of your game and launch the game. Default settings will be created in `UserData/modprefs.ini`.
+Drag all included folders into your game directory and launch the game. Default settings will be created in `UserData/modprefs.ini`.
 
 ## Configuration
 
