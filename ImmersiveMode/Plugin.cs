@@ -14,7 +14,7 @@ namespace ImmersiveMode
     {
 
         public string Name => "Immersive Mode";
-        public string Version => "1.0.0";
+        public string Version => "1.0.1";
 
         private static readonly string[] env = { "DefaultEnvironment", "BigMirrorEnvironment", "TriangleEnvironment", "NiceEnvironment" };
 

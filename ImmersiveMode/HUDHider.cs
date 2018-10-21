@@ -22,6 +22,8 @@ namespace ImmersiveMode
         GameObject progress_rank;
         GameObject fcdisplay_ring;
         GameObject tweaks_time;
+        GameObject misscounter_count;
+        GameObject misscounter_label;
         
         private static readonly string[] cameraplugins = { "CameraPlus", "CameraPlusOrbitEdition", "DynamicCamera" };
 
@@ -52,13 +54,17 @@ namespace ImmersiveMode
             Console.WriteLine("[ImmersiveMode] Initialized.");
 
             yield return new WaitForSeconds(0.05f);
-
+            
             energy = GameObject.Find("EnergyPanel");
 
             progress_counter = GameObject.Find("Counter");
             progress_score = GameObject.Find("ScoreCounter");
             fcdisplay_ring = GameObject.Find("FCRing");
             tweaks_time = GameObject.Find("Clock Canvas");
+            misscounter_count = GameObject.Find("MissedCounter");
+
+            misscounter_label = (FindObjectsOfType(typeof(GameObject)) as GameObject[]).Where(
+                o => o.name == "Label" && o.GetComponent<TextMeshPro>() != null && o.GetComponent<TextMeshPro>().text == "Misses").FirstOrDefault();
             
             progress_rank = (FindObjectsOfType(typeof(GameObject)) as GameObject[]).Where(
                 o => o.GetComponent<TextMeshPro>() != null && o.GetComponent<TextMeshPro>().text == "SSS").FirstOrDefault();
@@ -94,7 +100,7 @@ namespace ImmersiveMode
 
             combo.layer = 26;
             foreach (Transform c in combo.transform) c.gameObject.layer = 26;
-
+            
             front.layer = 26;
             foreach (Transform c in front.transform.GetChild(0).transform) c.gameObject.layer = 26;
 
@@ -129,6 +135,10 @@ namespace ImmersiveMode
             }
 
             if (tweaks_time != null) tweaks_time.layer = 26;
+            
+            if (misscounter_count != null) misscounter_count.layer = 26;
+
+            if (misscounter_label != null) misscounter_label.layer = 26;
 
             Console.WriteLine("[ImmersiveMode] Applied hidden layer (26) to game objects.");
         }
