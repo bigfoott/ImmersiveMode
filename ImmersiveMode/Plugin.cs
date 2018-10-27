@@ -21,7 +21,10 @@ namespace ImmersiveMode
         private void OnActiveSceneChanged(Scene arg0, Scene arg1)
         {
             if (env.Contains(arg1.name) && (ModPrefs.GetBool("ImmersiveMode", "HMDEnabled", false, true) || ModPrefs.GetBool("ImmersiveMode", "MirrorEnabled", false, true)))
+            {
                 new GameObject("HUDHider").AddComponent<HUDHider>();
+                new GameObject("WaitForFailText").AddComponent<WaitForFailText>();
+            }
             else if (SettingsUI.isMenuScene(arg1))
             {
                 var subMenu = SettingsUI.CreateSubMenu("Immersive Mode");

@@ -20,6 +20,7 @@ namespace ImmersiveMode
         GameObject progress_counter;
         GameObject progress_score;
         GameObject progress_rank;
+        GameObject progress_pb;
         GameObject fcdisplay_ring;
         GameObject tweaks_time;
         GameObject misscounter_count;
@@ -63,6 +64,9 @@ namespace ImmersiveMode
             tweaks_time = GameObject.Find("Clock Canvas");
             misscounter_count = GameObject.Find("MissedCounter");
 
+            progress_pb = (FindObjectsOfType(typeof(GameObject)) as GameObject[]).Where(
+                o => o.GetComponent<TextMeshPro>() != null && (o.GetComponent<TextMeshPro>().text.StartsWith("PB: ") || o.GetComponent<TextMeshPro>().text == "--")).FirstOrDefault();
+
             misscounter_label = (FindObjectsOfType(typeof(GameObject)) as GameObject[]).Where(
                 o => o.name == "Label" && o.GetComponent<TextMeshPro>() != null && o.GetComponent<TextMeshPro>().text == "Misses").FirstOrDefault();
             
@@ -74,7 +78,7 @@ namespace ImmersiveMode
                 mainCamera.cullingMask &= ~(1 << 26);
             else
                 mainCamera.cullingMask |= (1 << 26);
-
+            
             foreach (var pl in IllusionInjector.PluginManager.Plugins.Where(p => cameraplugins.Contains(p.Name)))
             {
                 MonoBehaviour camPlus = ReflectionUtil.GetPrivateField<MonoBehaviour>(pl, "_cameraPlus");
@@ -100,7 +104,7 @@ namespace ImmersiveMode
 
             combo.layer = 26;
             foreach (Transform c in combo.transform) c.gameObject.layer = 26;
-            
+
             front.layer = 26;
             foreach (Transform c in front.transform.GetChild(0).transform) c.gameObject.layer = 26;
 
@@ -127,6 +131,8 @@ namespace ImmersiveMode
                 progress_rank.layer = 26;
                 foreach (Transform c in progress_rank.transform) c.gameObject.layer = 26;
             }
+            
+            if (progress_pb != null) progress_pb.layer = 26;
 
             if (fcdisplay_ring != null)
             {

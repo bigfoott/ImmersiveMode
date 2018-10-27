@@ -75,6 +75,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\ReflectionUtil.cs" />
     <Compile Include="Util\SettingsUI.cs" />
+    <Compile Include="WaitForFailText.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
