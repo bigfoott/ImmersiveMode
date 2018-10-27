@@ -20,7 +20,13 @@ namespace ImmersiveMode
         {
             if (failText == null) Awake();
             if (failText == null) return;
-            Console.WriteLine("yeet");
+            Console.WriteLine(" __     ________ ______ _______ \n" +
+                " \\ \\   / /  ____|  ____|__   __|\n" +
+                "  \\ \\_/ /| |__  | |__     | |   \n" +
+                "   \\   / |  __| |  __|    | |   \n" +
+                "    | |  | |____| |____   | |   \n" +
+                "    |_|  |______|______|  |_|   ");
+
             failText.layer = 26;
         }
     }
